@@ -2,7 +2,10 @@ package ru.netology.diploma.data;
 
 import com.github.javafaker.Faker;
 import lombok.Value;
+import lombok.var;
 
+import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class DataHelper {
@@ -13,11 +16,11 @@ public class DataHelper {
 
     @Value
     public static class CardInfo {
-        private String numberCard;
-        private String month;
-        private String year;
-        private String name;
-        private String cvc;
+        String numberCard;
+        String month;
+        String year;
+        String name;
+        String cvc;
     }
 
     private static String generateRandomNumberCard() {
@@ -25,11 +28,13 @@ public class DataHelper {
     }
 
     private static String generateRandomMonth() {
-        return Integer.toString(faker.number().numberBetween(1, 13));
+        var random = new SecureRandom();
+        var list = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+        return list.get(random.nextInt(list.size()));
     }
 
     private static String generateRandomValidYear() {
-        return Integer.toString(faker.number().numberBetween(23, 33));
+        return Integer.toString(faker.number().numberBetween(24, 28));
     }
 
     private static String generateRandomName() {

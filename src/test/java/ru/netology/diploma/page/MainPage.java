@@ -3,24 +3,28 @@ package ru.netology.diploma.page;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.diploma.data.DataHelper;
 
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
+import java.util.List;
+
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class MainPage {
 
-    private SelenideElement numberCardField = $(byText("Номер карты"));
-    private SelenideElement monthField = $(byText("Месяц"));
-    private SelenideElement yearField = $(byText("Год"));
-    private SelenideElement nameField = $(byText("Владелец"));
-    private SelenideElement cvcField = $(byText("CVC/CVV"));
-    private SelenideElement buttonNext = $(byText("Продолжить"));
+    List<SelenideElement> input = $$(".input__control");
+    SelenideElement cardNumberField = input.get(0);
+    SelenideElement monthField = input.get(1);
+    SelenideElement yearField = input.get(2);
+    SelenideElement nameField = input.get(3);
+    SelenideElement cvcOrCvvNumberField = input.get(4);
+    SelenideElement buttonNext = $$(".button__content").find(exactText("Продолжить"));
+
 
     public void insertCard(DataHelper.CardInfo info) {
-        numberCardField.setValue(info.getNumberCard());
+        cardNumberField.setValue(info.getNumberCard());
         monthField.setValue(info.getMonth());
         yearField.setValue(info.getYear());
         nameField.setValue(info.getName());
-        cvcField.setValue(info.getCvc());
+        cvcOrCvvNumberField.setValue(info.getCvc());
         buttonNext.click();
     }
 
