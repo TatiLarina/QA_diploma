@@ -30,3 +30,8 @@ B) Для запуска приложения с базой данных postgre
 ```
 java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" -jar artifacts/aqa-shop.jar
 ```
+4. Запустить тесты:
+<br> А) Для запуска тестов с базой данных mysql выполнить команду:
+```
+./gradlew clean test "-Ddb.url=jdbc:mysql://localhost:3306/app"
+```

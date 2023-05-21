@@ -6,6 +6,7 @@ import lombok.var;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class DataHelper {
@@ -29,7 +30,7 @@ public class DataHelper {
 
     private static String generateRandomMonth() {
         var random = new SecureRandom();
-        var list = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+        List<String> list = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
         return list.get(random.nextInt(list.size()));
     }
 

@@ -26,8 +26,9 @@ public class MainPageTest {
         var mainPage = new MainPage();
         var cardInfo = DataHelper.getCardApproved();
         $$(".button__content").find(exactText("Купить")).click();
+        $(byText("Оплата по карте")).shouldBe(Condition.visible);
         mainPage.insertCard(cardInfo);
-        $(byText("Операция одобрена Банком.")).shouldBe(Condition.visible, Duration.ofSeconds(30));
+        $(byText("Операция одобрена Банком.")).shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 
     @Test
@@ -36,6 +37,7 @@ public class MainPageTest {
         var mainPage = new MainPage();
         var cardInfo = DataHelper.getCardApproved();
         $$(".button__content").find(exactText("Купить в кредит")).click();
+        $(byText("Кредит по данным карты")).shouldBe(Condition.visible);
         mainPage.insertCard(cardInfo);
         $(byText("Операция одобрена Банком.")).shouldBe(Condition.visible, Duration.ofSeconds(30));
     }
@@ -55,6 +57,26 @@ public class MainPageTest {
     void shouldDeclinedCardCredit() {
         var mainPage = new MainPage();
         var cardInfo = DataHelper.getCardDeclined();
+        $$(".button__content").find(exactText("Купить в кредит")).click();
+        mainPage.insertCard(cardInfo);
+        $(byText("Ошибка! Банк отказал в проведении операции.")).shouldBe(Condition.visible, Duration.ofSeconds(30));
+    }
+
+    @Test
+    @DisplayName("Купить картой со случайными валидными данными")
+    void shouldRandomCardBuy() {
+        var mainPage = new MainPage();
+        var cardInfo = DataHelper.getRandomValidCard();
+        $$(".button__content").find(exactText("Купить")).click();
+        mainPage.insertCard(cardInfo);
+        $(byText("Ошибка! Банк отказал в проведении операции.")).shouldBe(Condition.visible, Duration.ofSeconds(30));
+    }
+
+    @Test
+    @DisplayName("Купить картой со случайными валидными данными в кредит")
+    void shouldRandomCardCredit() {
+        var mainPage = new MainPage();
+        var cardInfo = DataHelper.getRandomValidCard();
         $$(".button__content").find(exactText("Купить в кредит")).click();
         mainPage.insertCard(cardInfo);
         $(byText("Ошибка! Банк отказал в проведении операции.")).shouldBe(Condition.visible, Duration.ofSeconds(30));
