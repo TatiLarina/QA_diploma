@@ -35,3 +35,11 @@ java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" -jar artifac
 ```
 ./gradlew clean test "-Ddb.url=jdbc:mysql://localhost:3306/app"
 ```
+B) Для запуска тестов с базой данных postgres выполнить команду:
+```
+./gradlew clean test "-Ddb.url=jdbc:postgresql://localhost:5432/app"
+```
+5. Сформировать и открыть в браузере отчеты:
+```
+./gradlew allureServe
+```
