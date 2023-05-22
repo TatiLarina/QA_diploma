@@ -25,7 +25,6 @@ public class MainPage {
     SelenideElement buyOnCreditButton = $$(".button__content").find(exactText("Купить в кредит"));
     SelenideElement messageSuccess = $(byText("Операция одобрена Банком."));
     SelenideElement messageError = $(byText("Ошибка! Банк отказал в проведении операции."));
-
     public void changeBuyForMoney() {
         buyForMoneyButton.click();
     }
@@ -52,4 +51,12 @@ public class MainPage {
         messageError.shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 
+    public void clickButtonNext() {
+        buttonNext.click();
+    }
+
+    public void validError() {
+        messageSuccess.shouldBe(Condition.hidden);
+        messageError.shouldBe(Condition.hidden);
+    }
 }
