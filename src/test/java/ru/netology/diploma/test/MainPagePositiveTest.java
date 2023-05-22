@@ -9,7 +9,7 @@ import ru.netology.diploma.page.MainPage;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class MainPageTest {
+public class MainPagePositiveTest {
     private MainPage mainPage;
 
     @BeforeAll
@@ -17,10 +17,12 @@ public class MainPageTest {
         open("http://localhost:8080/");
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
+
     @BeforeEach
     void setUpPage() {
         mainPage = new MainPage();
     }
+
     @AfterAll
     static void tearDownAll() {
         SelenideLogger.removeListener("allure");
