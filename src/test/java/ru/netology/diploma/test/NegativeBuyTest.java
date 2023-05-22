@@ -10,6 +10,7 @@ import ru.netology.diploma.page.MainPage;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class NegativeBuyTest {
     private MainPage mainPage;
     private String expected;
@@ -29,6 +30,11 @@ public class NegativeBuyTest {
         mainPage.changeBuyForMoney();
     }
 
+    @AfterEach
+    void downPage() {
+        mainPage.changeBuyOnCredit();
+    }
+
     @AfterAll
     static void tearDownAll() {
         SelenideLogger.removeListener("allure");
@@ -36,7 +42,7 @@ public class NegativeBuyTest {
 
     @Test
     @DisplayName("Отправка пустых полей")
-    void shouldEmptyFieldsBuy() {
+    void emptyFields() {
         mainPage.clickButtonNext();
         expected = "Неверный формат";
         actual = $$(".input__sub").get(0).getText().trim();
