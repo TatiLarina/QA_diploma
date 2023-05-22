@@ -2,6 +2,7 @@ package ru.netology.diploma.page;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.Keys;
 import ru.netology.diploma.data.DataHelper;
 
 import java.time.Duration;
@@ -40,7 +41,6 @@ public class MainPage {
         yearField.setValue(info.getYear());
         nameField.setValue(info.getName());
         cvcOrCvvNumberField.setValue(info.getCvc());
-        buttonNext.click();
     }
 
     public void checkMessageSuccess() {
@@ -55,8 +55,8 @@ public class MainPage {
         buttonNext.click();
     }
 
-    public void validError() {
-        messageSuccess.shouldBe(Condition.hidden);
-        messageError.shouldBe(Condition.hidden);
+    public void clearField(SelenideElement field) {
+        field.sendKeys(Keys.CONTROL + "A");
+        field.sendKeys(Keys.BACK_SPACE);
     }
 }

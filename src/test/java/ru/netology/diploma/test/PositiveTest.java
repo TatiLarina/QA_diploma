@@ -9,7 +9,7 @@ import ru.netology.diploma.page.MainPage;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class MainPagePositiveTest {
+public class PositiveTest {
     private MainPage mainPage;
 
     @BeforeAll
@@ -34,6 +34,7 @@ public class MainPagePositiveTest {
         var cardInfo = DataHelper.getCardApproved();
         mainPage.changeBuyForMoney();
         mainPage.insertCard(cardInfo);
+        mainPage.clickButtonNext();
         mainPage.checkMessageSuccess();
     }
 
@@ -43,6 +44,7 @@ public class MainPagePositiveTest {
         var cardInfo = DataHelper.getCardApproved();
         mainPage.changeBuyOnCredit();
         mainPage.insertCard(cardInfo);
+        mainPage.clickButtonNext();
         mainPage.checkMessageSuccess();
     }
 
@@ -52,6 +54,7 @@ public class MainPagePositiveTest {
         var cardInfo = DataHelper.getCardDeclined();
         mainPage.changeBuyForMoney();
         mainPage.insertCard(cardInfo);
+        mainPage.clickButtonNext();
         mainPage.checkMessageError();
     }
 
@@ -61,6 +64,7 @@ public class MainPagePositiveTest {
         var cardInfo = DataHelper.getCardDeclined();
         mainPage.changeBuyOnCredit();
         mainPage.insertCard(cardInfo);
+        mainPage.clickButtonNext();
         mainPage.checkMessageError();
     }
 
@@ -70,6 +74,7 @@ public class MainPagePositiveTest {
         var cardInfo = DataHelper.getRandomValidCard();
         mainPage.changeBuyForMoney();
         mainPage.insertCard(cardInfo);
+        mainPage.clickButtonNext();
         mainPage.checkMessageError();
     }
 
@@ -79,6 +84,7 @@ public class MainPagePositiveTest {
         var cardInfo = DataHelper.getRandomValidCard();
         mainPage.changeBuyOnCredit();
         mainPage.insertCard(cardInfo);
+        mainPage.clickButtonNext();
         mainPage.checkMessageError();
     }
 
