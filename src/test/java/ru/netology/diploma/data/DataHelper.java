@@ -5,6 +5,7 @@ import lombok.Value;
 import lombok.var;
 
 import java.security.SecureRandom;
+import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -35,7 +36,7 @@ public class DataHelper {
     }
 
     private static String generateRandomValidYear() {
-        return Integer.toString(faker.number().numberBetween(24, 28));
+        return Integer.toString(faker.number().numberBetween(getYearNow(), getYearNow()+5));
     }
 
     private static String generateRandomName() {
@@ -59,6 +60,22 @@ public class DataHelper {
     public static CardInfo getRandomValidCard() {
         return new CardInfo(generateRandomNumberCard(), generateRandomMonth(), generateRandomValidYear(),
                 generateRandomName(), generateRandomCvc());
+    }
+
+    public static int getYearNow() {
+        return YearMonth.now().getYear()-2000;
+    }
+
+    public static int getMonthNow() {
+        return YearMonth.now().getMonthValue();
+    }
+
+    public static String getLastYear() {
+        return Integer.toString(getYearNow() - 1);
+    }
+
+    public static String getYearPlus6() {
+        return Integer.toString(getYearNow() + 6);
     }
 
 

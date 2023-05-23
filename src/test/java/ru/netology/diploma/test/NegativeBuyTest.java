@@ -100,6 +100,33 @@ public class NegativeBuyTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    @DisplayName("Валидация поля год. Прошлый год")
+    void validLastYear() {
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField($$(".input__control").get(2));
+        $$(".input__control").get(2).setValue(DataHelper.getLastYear());
+        mainPage.clickButtonNext();
+        $(".input__sub").shouldBe(Condition.visible);
+        expected = "Истёк срок действия карты";
+        actual = $(".input__sub").getText().trim();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Валидация поля год. Текущий год + 6 лет")
+    void validYearPlus6() {
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField($$(".input__control").get(2));
+        $$(".input__control").get(2).setValue(DataHelper.getYearPlus6());
+        mainPage.clickButtonNext();
+        $(".input__sub").shouldBe(Condition.visible);
+        expected = "Неверно указан срок действия карты";
+        actual = $(".input__sub").getText().trim();
+        assertEquals(expected, actual);
+    }
+
+
 
 
 }
