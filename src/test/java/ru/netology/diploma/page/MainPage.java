@@ -26,8 +26,12 @@ public class MainPage {
     SelenideElement buyOnCreditButton = $$(".button__content").find(exactText("Купить в кредит"));
     SelenideElement messageSuccess = $(byText("Операция одобрена Банком."));
     SelenideElement messageError = $(byText("Ошибка! Банк отказал в проведении операции."));
+    List<SelenideElement> inputWarning = $$(".input__sub");
+
+    // Выбор "Купить" или "Купить в кредит"
     public void changeBuyForMoney() {
         buyForMoneyButton.click();
+        $(byText("Оплата по карте")).shouldBe(Condition.visible);
     }
 
     public void changeBuyOnCredit() {
@@ -35,6 +39,7 @@ public class MainPage {
         $(byText("Кредит по данным карты")).shouldBe(Condition.visible);
     }
 
+    // Заполнение всех полей
     public void insertCard(DataHelper.CardInfo info) {
         cardNumberField.setValue(info.getNumberCard());
         monthField.setValue(info.getMonth());
@@ -43,6 +48,7 @@ public class MainPage {
         cvcOrCvvNumberField.setValue(info.getCvc());
     }
 
+    // Проверка видимости предупреждений
     public void checkMessageSuccess() {
         messageSuccess.shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
@@ -51,12 +57,37 @@ public class MainPage {
         messageError.shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 
+    // Нажатие кнопки "Продолжить"
     public void clickButtonNext() {
         buttonNext.click();
     }
 
-    public void clearField(SelenideElement field) {
+    // Очищение поля
+    public void clearField(int numberField) {
+        SelenideElement field = input.get(numberField);
         field.sendKeys(Keys.CONTROL + "A");
         field.sendKeys(Keys.BACK_SPACE);
     }
+
+    // Заполнение поля
+    public void setValueField(int numberField, String text) {
+        input.get(numberField).setValue(text);
+    }
+
+    // Получение содержимого поля
+    public String getValueField(int numberField) {
+        return input.get(numberField).getAttribute("value");
+    }
+
+    // Получение текста предупреждения
+    public String getInputWarning(int numberField) {
+        return inputWarning.get(numberField).getText().trim();
+    }
+
+    // Предупреждение
+    public SelenideElement inputWarning(int numberField) {
+        return inputWarning.get(numberField);
+    }
+
+
 }

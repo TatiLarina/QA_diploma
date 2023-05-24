@@ -10,12 +10,16 @@ import ru.netology.diploma.page.MainPage;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@TestMethodOrder(MethodOrderer.MethodName.class)
 public class NegativeBuyTest {
     private MainPage mainPage;
     private String expected;
     private String actual;
     private DataHelper.CardInfo cardInfo;
+    private int fieldCardNumber = 0;
+    private int fieldMounth = 1;
+    private int fieldYear = 2;
+    private int fieldName = 3;
+    private int fieldCVC = 4;
 
     @BeforeAll
     static void setUpAll() {
@@ -45,16 +49,27 @@ public class NegativeBuyTest {
     void emptyFields() {
         mainPage.clickButtonNext();
         expected = "Неверный формат";
-        actual = $$(".input__sub").get(0).getText().trim();
+        actual = mainPage.getInputWarning(0);
         assertEquals(expected, actual);
-        actual = $$(".input__sub").get(1).getText().trim();
+        actual = mainPage.getInputWarning(1);
         assertEquals(expected, actual);
-        actual = $$(".input__sub").get(2).getText().trim();
+        actual = mainPage.getInputWarning(2);
         assertEquals(expected, actual);
-        actual = $$(".input__sub").get(4).getText().trim();
+        actual = mainPage.getInputWarning(4);
         assertEquals(expected, actual);
         expected = "Поле обязательно для заполнения";
-        actual = $$(".input__sub").get(3).getText().trim();
+        actual = mainPage.getInputWarning(3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Очищение предупреждений после исправления ошибок в заполнении полей")
+    void correctionFields() {
+        mainPage.clickButtonNext();
+        mainPage.insertCard(cardInfo);
+        mainPage.clickButtonNext();
+        int expected = 0;
+        int actual = $$(".input__sub").size();
         assertEquals(expected, actual);
     }
 
@@ -62,15 +77,15 @@ public class NegativeBuyTest {
     @DisplayName("Валидация поля номер карты")
     void validNumberCard() {
         mainPage.insertCard(cardInfo);
-        mainPage.clearField($$(".input__control").get(0));
-        $$(".input__control").get(0).setValue("asdf 1111 !`'_+=-");
+        mainPage.clearField(fieldCardNumber);
+        mainPage.setValueField(fieldCardNumber, "asdf 1111 !`'_+=-");
         expected = "1111";
-        actual = $$(".input__control").get(0).getAttribute("value").trim();
+        actual = mainPage.getValueField(fieldCardNumber);
         assertEquals(expected, actual);
         mainPage.clickButtonNext();
-        $$(".input__sub").get(0).shouldBe(Condition.visible);
+        mainPage.inputWarning(0).shouldBe(Condition.visible);
         expected = "Неверный формат";
-        actual = $$(".input__sub").get(0).getText().trim();
+        actual = mainPage.getInputWarning(0);
         assertEquals(expected, actual);
     }
 
@@ -78,12 +93,12 @@ public class NegativeBuyTest {
     @DisplayName("Валидация поля месяц. 00")
     void validMonth00() {
         mainPage.insertCard(cardInfo);
-        mainPage.clearField($$(".input__control").get(1));
-        $$(".input__control").get(1).setValue("00");
+        mainPage.clearField(fieldMounth);
+        mainPage.setValueField(fieldMounth, "00");
         mainPage.clickButtonNext();
-        $(".input__sub").shouldBe(Condition.visible);
+        mainPage.inputWarning(0).shouldBe(Condition.visible);
         expected = "Неверно указан срок действия карты";
-        actual = $(".input__sub").getText().trim();
+        actual = mainPage.getInputWarning(0);
         assertEquals(expected, actual);
     }
 
@@ -91,12 +106,12 @@ public class NegativeBuyTest {
     @DisplayName("Валидация поля месяц. 13")
     void validMonth13() {
         mainPage.insertCard(cardInfo);
-        mainPage.clearField($$(".input__control").get(1));
-        $$(".input__control").get(1).setValue("13");
+        mainPage.clearField(fieldMounth);
+        mainPage.setValueField(fieldMounth, "13");
         mainPage.clickButtonNext();
-        $(".input__sub").shouldBe(Condition.visible);
+        mainPage.inputWarning(0).shouldBe(Condition.visible);
         expected = "Неверно указан срок действия карты";
-        actual = $(".input__sub").getText().trim();
+        actual = mainPage.getInputWarning(0);
         assertEquals(expected, actual);
     }
 
@@ -104,12 +119,12 @@ public class NegativeBuyTest {
     @DisplayName("Валидация поля год. Прошлый год")
     void validLastYear() {
         mainPage.insertCard(cardInfo);
-        mainPage.clearField($$(".input__control").get(2));
-        $$(".input__control").get(2).setValue(DataHelper.getLastYear());
+        mainPage.clearField(fieldYear);
+        mainPage.setValueField(fieldYear, DataHelper.getLastYear());
         mainPage.clickButtonNext();
-        $(".input__sub").shouldBe(Condition.visible);
+        mainPage.inputWarning(0).shouldBe(Condition.visible);
         expected = "Истёк срок действия карты";
-        actual = $(".input__sub").getText().trim();
+        actual = mainPage.getInputWarning(0);
         assertEquals(expected, actual);
     }
 
@@ -117,15 +132,79 @@ public class NegativeBuyTest {
     @DisplayName("Валидация поля год. Текущий год + 6 лет")
     void validYearPlus6() {
         mainPage.insertCard(cardInfo);
-        mainPage.clearField($$(".input__control").get(2));
-        $$(".input__control").get(2).setValue(DataHelper.getYearPlus6());
+        mainPage.clearField(fieldYear);
+        mainPage.setValueField(fieldYear, DataHelper.getYearPlus6());
         mainPage.clickButtonNext();
-        $(".input__sub").shouldBe(Condition.visible);
+        mainPage.inputWarning(0).shouldBe(Condition.visible);
         expected = "Неверно указан срок действия карты";
-        actual = $(".input__sub").getText().trim();
+        actual = mainPage.getInputWarning(0);
         assertEquals(expected, actual);
     }
 
+    @Test
+    @DisplayName("Валидация поля год. 00")
+    void validYear00() {
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField(fieldYear);
+        mainPage.setValueField(fieldYear, "00");
+        mainPage.clickButtonNext();
+        mainPage.inputWarning(0).shouldBe(Condition.visible);
+        expected = "Истёк срок действия карты";
+        actual = mainPage.getInputWarning(0);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Валидация поля год. Неверный формат")
+    void validYearWrongFormat() {
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField(fieldYear);
+        mainPage.setValueField(fieldYear, "0");
+        mainPage.clickButtonNext();
+        mainPage.inputWarning(0).shouldBe(Condition.visible);
+        expected = "Неверный формат";
+        actual = mainPage.getInputWarning(0);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Срок карты вышел в прошлом месяце")
+    void validLastMonth() {
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField(fieldMounth);
+        mainPage.clearField(fieldYear);
+        mainPage.setValueField(fieldMounth, DataHelper.getLastMonth());
+        mainPage.setValueField(fieldYear, DataHelper.getYearForLastMonth());
+        mainPage.clickButtonNext();
+        mainPage.inputWarning(0).shouldBe(Condition.visible);
+        expected = "Истёк срок действия карты";
+        actual = mainPage.getInputWarning(0);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Валидация поля имя. Цифры")
+    void validNameNumbers() {
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField(fieldName);
+        mainPage.setValueField(fieldName, "12345");
+        mainPage.clickButtonNext();
+        expected = "Неверный формат";
+        actual = mainPage.getInputWarning(0);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Валидация поля имя. Кириллица")
+    void validNameCirilica() {
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField(fieldName);
+        mainPage.setValueField(fieldName, "Иван Иванов");
+        mainPage.clickButtonNext();
+        expected = "Неверный формат";
+        actual = mainPage.getInputWarning(0);
+        assertEquals(expected, actual);
+    }
 
 
 

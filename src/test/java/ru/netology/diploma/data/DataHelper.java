@@ -36,7 +36,7 @@ public class DataHelper {
     }
 
     private static String generateRandomValidYear() {
-        return Integer.toString(faker.number().numberBetween(getYearNow(), getYearNow()+5));
+        return Integer.toString(faker.number().numberBetween(getYearNow()+1, getYearNow()+5));
     }
 
     private static String generateRandomName() {
@@ -66,12 +66,37 @@ public class DataHelper {
         return YearMonth.now().getYear()-2000;
     }
 
-    public static int getMonthNow() {
-        return YearMonth.now().getMonthValue();
+    public static String getMonthNow() {
+        String  month = Integer.toString(YearMonth.now().getMonthValue());
+        if (month.length() == 1) {
+            month = "0"+month;
+        }
+        return month;
+
+    }
+
+    public static String getLastMonth() {
+        String month = Integer.toString(YearMonth.now().getMonthValue()-1);
+        if (month.equals("0")) {
+            month = "12";
+        }
+        if (month.length() == 1) {
+            month = "0"+month;
+        }
+        return month;
     }
 
     public static String getLastYear() {
         return Integer.toString(getYearNow() - 1);
+    }
+
+    public static String getYearForLastMonth() {
+        int month = YearMonth.now().getMonthValue();
+        int year = YearMonth.now().getYear()-2000;
+        if (month == 1) {
+            year = year-1;
+        }
+        return Integer.toString(year);
     }
 
     public static String getYearPlus6() {

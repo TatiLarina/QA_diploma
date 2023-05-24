@@ -39,11 +39,39 @@ public class PositiveTest {
     }
 
     @Test
+    @DisplayName("Купить активной картой со сроком истечения в текущем месяце")
+    void shouldApprovedCardBuyMonthNow() {
+        var cardInfo = DataHelper.getCardApproved();
+        mainPage.changeBuyForMoney();
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField(1);
+        mainPage.clearField(2);
+        mainPage.setValueField(1, DataHelper.getMonthNow());
+        mainPage.setValueField(2, DataHelper.getYearForLastMonth());
+        mainPage.clickButtonNext();
+        mainPage.checkMessageSuccess();
+    }
+
+    @Test
     @DisplayName("Купить активной картой в кредит")
     void shouldApprovedCardCredit() {
         var cardInfo = DataHelper.getCardApproved();
         mainPage.changeBuyOnCredit();
         mainPage.insertCard(cardInfo);
+        mainPage.clickButtonNext();
+        mainPage.checkMessageSuccess();
+    }
+
+    @Test
+    @DisplayName("Купить активной картой со сроком истечения в текущем месяце в кредит")
+    void shouldApprovedCardCreditMonthNow() {
+        var cardInfo = DataHelper.getCardApproved();
+        mainPage.changeBuyOnCredit();
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField(1);
+        mainPage.clearField(2);
+        mainPage.setValueField(1, DataHelper.getMonthNow());
+        mainPage.setValueField(2, DataHelper.getYearForLastMonth());
         mainPage.clickButtonNext();
         mainPage.checkMessageSuccess();
     }
