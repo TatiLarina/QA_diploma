@@ -68,6 +68,7 @@ public class NegativeBuyTest {
         mainPage.clickButtonNext();
         mainPage.insertCard(cardInfo);
         mainPage.clickButtonNext();
+        mainPage.inputWarning(0).shouldBe(Condition.hidden);
         int expected = 0;
         int actual = $$(".input__sub").size();
         assertEquals(expected, actual);
@@ -111,6 +112,19 @@ public class NegativeBuyTest {
         mainPage.clickButtonNext();
         mainPage.inputWarning(0).shouldBe(Condition.visible);
         expected = "Неверно указан срок действия карты";
+        actual = mainPage.getInputWarning(0);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Валидация поля месяц. Неверный формат")
+    void validMonthWrongFormat() {
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField(fieldMounth);
+        mainPage.setValueField(fieldMounth, "1");
+        mainPage.clickButtonNext();
+        mainPage.inputWarning(0).shouldBe(Condition.visible);
+        expected = "Неверный формат";
         actual = mainPage.getInputWarning(0);
         assertEquals(expected, actual);
     }
@@ -206,6 +220,17 @@ public class NegativeBuyTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    @DisplayName("Валидация поля CVC. Буквы")
+    void validCVC() {
+        mainPage.insertCard(cardInfo);
+        mainPage.clearField(fieldCVC);
+        mainPage.setValueField(fieldCVC, "ab");
+        mainPage.clickButtonNext();
+        expected = "Неверный формат";
+        actual = mainPage.getInputWarning(0);
+        assertEquals(expected, actual);
+    }
 
 
 }

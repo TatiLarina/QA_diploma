@@ -1,8 +1,7 @@
 package ru.netology.diploma.data;
 
 import com.github.javafaker.Faker;
-import lombok.Value;
-import lombok.var;
+import lombok.*;
 
 import java.security.SecureRandom;
 import java.time.YearMonth;
@@ -36,7 +35,7 @@ public class DataHelper {
     }
 
     private static String generateRandomValidYear() {
-        return Integer.toString(faker.number().numberBetween(getYearNow()+1, getYearNow()+5));
+        return Integer.toString(faker.number().numberBetween(getYearNow() + 1, getYearNow() + 5));
     }
 
     private static String generateRandomName() {
@@ -63,25 +62,25 @@ public class DataHelper {
     }
 
     public static int getYearNow() {
-        return YearMonth.now().getYear()-2000;
+        return YearMonth.now().getYear() - 2000;
     }
 
     public static String getMonthNow() {
-        String  month = Integer.toString(YearMonth.now().getMonthValue());
+        String month = Integer.toString(YearMonth.now().getMonthValue());
         if (month.length() == 1) {
-            month = "0"+month;
+            month = "0" + month;
         }
         return month;
 
     }
 
     public static String getLastMonth() {
-        String month = Integer.toString(YearMonth.now().getMonthValue()-1);
+        String month = Integer.toString(YearMonth.now().getMonthValue() - 1);
         if (month.equals("0")) {
             month = "12";
         }
         if (month.length() == 1) {
-            month = "0"+month;
+            month = "0" + month;
         }
         return month;
     }
@@ -92,9 +91,9 @@ public class DataHelper {
 
     public static String getYearForLastMonth() {
         int month = YearMonth.now().getMonthValue();
-        int year = YearMonth.now().getYear()-2000;
+        int year = YearMonth.now().getYear() - 2000;
         if (month == 1) {
-            year = year-1;
+            year = year - 1;
         }
         return Integer.toString(year);
     }
