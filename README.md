@@ -11,21 +11,8 @@
 git clone  https://github.com/TatiLarina/QA_diploma
 ```
 2. Запустить контейнеры docker:
-<br> А) Для работы с базой данных mysql выполнить команду:
 ```
-docker-compose -f docker-compose-mysql.yml up -d 
-```
-После прогона тестов остановить контейнеры:
-```
-docker-compose -f docker-compose-mysql.yml down
-```
-B) Для работы с базой данных postgres выполнить команду:
-```
-docker-compose -f docker-compose-postgres.yml up -d 
-```
-После прогона тестов остановить контейнеры:
-```
-docker-compose -f docker-compose-postgres.yml down
+docker-compose up -d 
 ```
 3. Запустить приложение:
 <br> A) Для запуска приложения с базой данных mysql выполнить команду:
@@ -48,4 +35,10 @@ B) Для запуска тестов с базой данных postgres вып
 5. Сформировать и открыть в браузере отчеты:
 ```
 ./gradlew allureServe
+```
+6. Закрыть отчет Ctrl+C
+7. Закрыть приложение Ctrl+C
+8. Остановить docker
+```
+docker-compose down
 ```
