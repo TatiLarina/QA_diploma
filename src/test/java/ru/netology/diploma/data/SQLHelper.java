@@ -15,32 +15,36 @@ public class SQLHelper {
     private static String url = System.getProperty("db.url");
     private static String username = System.getProperty("db.username");
     private static String password = System.getProperty("db.password");
+    private static QueryRunner runner;
+    private static Connection conn;
 
     public SQLHelper() {
     }
 
+    public static void setUp() throws SQLException {
+        runner = new QueryRunner();
+        conn = DriverManager.getConnection(url, username, password);
+    }
+
     public static void clearAllData() throws SQLException {
-        QueryRunner runner = new QueryRunner();
-        Connection conn = DriverManager.getConnection(url, username, password);
+        setUp();
         runner.update(conn, "DELETE FROM credit_request_entity;");
         runner.update(conn, "DELETE FROM payment_entity;");
         runner.update(conn, "DELETE FROM order_entity;");
     }
 
     public static void checkPaymentStatus(Status status) throws SQLException {
-        QueryRunner runner = new QueryRunner();
-        val conn = DriverManager.getConnection(url, username, password);
+        setUp();
         val paymentDataSQL = "SELECT status FROM payment_entity;";
         val payment = runner.query(conn, paymentDataSQL, new BeanHandler<>(PaymentModel.class));
-        assertEquals(status, payment.status);
+        assertEquals(status, payment.getStatus());
     }
 
     public static void checkCreditStatus(Status status) throws SQLException {
-        QueryRunner runner = new QueryRunner();
-        val conn = DriverManager.getConnection(url, username, password);
+        setUp();
         val creditDataSQL = "SELECT status FROM credit_request_entity;";
         val credit = runner.query(conn, creditDataSQL, new BeanHandler<>(CreditModel.class));
-        assertEquals(status, credit.status);
+        assertEquals(status, credit.getStatus());
     }
 
 }
