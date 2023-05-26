@@ -1,6 +1,5 @@
 package ru.netology.diploma.test;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import lombok.var;
@@ -11,9 +10,7 @@ import ru.netology.diploma.data.Status;
 import ru.netology.diploma.page.MainPage;
 
 import java.sql.SQLException;
-import java.time.Duration;
 
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class SQLTest {
@@ -22,7 +19,8 @@ public class SQLTest {
     @BeforeAll
     static void setUpAll() {
         open("http://localhost:8080/");
-        SelenideLogger.addListener("allure", new AllureSelenide());
+        SelenideLogger.addListener("allure", new AllureSelenide()
+                .screenshots(true).savePageSource(true));
     }
 
     @BeforeEach
@@ -47,7 +45,7 @@ public class SQLTest {
         mainPage.changeBuyForMoney();
         mainPage.insertCard(cardInfo);
         mainPage.clickButtonNext();
-        $(".notification__title").shouldBe(Condition.visible, Duration.ofSeconds(15));
+        mainPage.messageVisible();
         SQLHelper.checkPaymentStatus(Status.APPROVED);
     }
 
@@ -58,7 +56,7 @@ public class SQLTest {
         mainPage.changeBuyForMoney();
         mainPage.insertCard(cardInfo);
         mainPage.clickButtonNext();
-        $(".notification__title").shouldBe(Condition.visible, Duration.ofSeconds(15));
+        mainPage.messageVisible();
         SQLHelper.checkPaymentStatus(Status.DECLINED);
     }
 
@@ -69,7 +67,7 @@ public class SQLTest {
         mainPage.changeBuyOnCredit();
         mainPage.insertCard(cardInfo);
         mainPage.clickButtonNext();
-        $(".notification__title").shouldBe(Condition.visible, Duration.ofSeconds(15));
+        mainPage.messageVisible();
         SQLHelper.checkCreditStatus(Status.APPROVED);
     }
 
@@ -80,7 +78,7 @@ public class SQLTest {
         mainPage.changeBuyOnCredit();
         mainPage.insertCard(cardInfo);
         mainPage.clickButtonNext();
-        $(".notification__title").shouldBe(Condition.visible, Duration.ofSeconds(15));
+        mainPage.messageVisible();
         SQLHelper.checkCreditStatus(Status.DECLINED);
     }
 

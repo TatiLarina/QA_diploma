@@ -27,6 +27,7 @@ public class MainPage {
     SelenideElement messageSuccess = $(byText("Операция одобрена Банком."));
     SelenideElement messageError = $(byText("Ошибка! Банк отказал в проведении операции."));
     List<SelenideElement> inputWarning = $$(".input__sub");
+    SelenideElement message = $(".notification__title");
 
     // Выбор "Купить" или "Купить в кредит"
     public void changeBuyForMoney() {
@@ -87,6 +88,10 @@ public class MainPage {
     // Предупреждение
     public SelenideElement inputWarning(int numberField) {
         return inputWarning.get(numberField);
+    }
+
+    public void messageVisible() {
+        message.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
 

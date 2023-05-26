@@ -15,7 +15,8 @@ public class PositiveTest {
     @BeforeAll
     static void setUpAll() {
         open("http://localhost:8080/");
-        SelenideLogger.addListener("allure", new AllureSelenide());
+        SelenideLogger.addListener("allure", new AllureSelenide()
+                .screenshots(true).savePageSource(true));
     }
 
     @BeforeEach

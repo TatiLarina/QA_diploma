@@ -1,30 +1,35 @@
+
 package ru.netology.diploma.test;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import ru.netology.diploma.data.DataHelper;
 import ru.netology.diploma.page.MainPage;
 
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+@SuppressWarnings("FieldCanBeLocal")
 
 public class NegativeBuyTest {
     private MainPage mainPage;
     private String expected;
     private String actual;
     private DataHelper.CardInfo cardInfo;
-    private int fieldCardNumber = 0;
-    private int fieldMounth = 1;
-    private int fieldYear = 2;
-    private int fieldName = 3;
-    private int fieldCVC = 4;
+    private final int fieldCardNumber = 0;
+    private final int fieldMonth = 1;
+    private final int fieldYear = 2;
+    private final int fieldName = 3;
+    private final int fieldCVC = 4;
 
     @BeforeAll
     static void setUpAll() {
         open("http://localhost:8080/");
-        SelenideLogger.addListener("allure", new AllureSelenide());
+        SelenideLogger.addListener("allure", new AllureSelenide()
+                .screenshots(true).savePageSource(true));
     }
 
     @BeforeEach
@@ -90,12 +95,15 @@ public class NegativeBuyTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    @DisplayName("Валидация поля месяц. 00")
-    void validMonth00() {
+    @ParameterizedTest
+    @DisplayName("Валидация поля месяц. Неверно указан срок действия карты")
+        @CsvSource({
+            "00", "13"
+        })
+    void validMonth0013(String month) {
         mainPage.insertCard(cardInfo);
-        mainPage.clearField(fieldMounth);
-        mainPage.setValueField(fieldMounth, "00");
+        mainPage.clearField(fieldMonth);
+        mainPage.setValueField(fieldMonth, month);
         mainPage.clickButtonNext();
         mainPage.inputWarning(0).shouldBe(Condition.visible);
         expected = "Неверно указан срок действия карты";
@@ -103,25 +111,15 @@ public class NegativeBuyTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    @DisplayName("Валидация поля месяц. 13")
-    void validMonth13() {
-        mainPage.insertCard(cardInfo);
-        mainPage.clearField(fieldMounth);
-        mainPage.setValueField(fieldMounth, "13");
-        mainPage.clickButtonNext();
-        mainPage.inputWarning(0).shouldBe(Condition.visible);
-        expected = "Неверно указан срок действия карты";
-        actual = mainPage.getInputWarning(0);
-        assertEquals(expected, actual);
-    }
-
-    @Test
+    @ParameterizedTest
     @DisplayName("Валидация поля месяц. Неверный формат")
-    void validMonthWrongFormat() {
+        @CsvSource({
+            "1", "ab", "аб", "-/", "1a"
+        })
+    void validMonthWrongFormat(String text) {
         mainPage.insertCard(cardInfo);
-        mainPage.clearField(fieldMounth);
-        mainPage.setValueField(fieldMounth, "1");
+        mainPage.clearField(fieldMonth);
+        mainPage.setValueField(fieldMonth, text);
         mainPage.clickButtonNext();
         mainPage.inputWarning(0).shouldBe(Condition.visible);
         expected = "Неверный формат";
@@ -168,12 +166,15 @@ public class NegativeBuyTest {
         assertEquals(expected, actual);
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Валидация поля год. Неверный формат")
-    void validYearWrongFormat() {
+        @CsvSource({
+            "0", "ab", "аб", "-/", "1a"
+        })
+    void validYear(String text) {
         mainPage.insertCard(cardInfo);
         mainPage.clearField(fieldYear);
-        mainPage.setValueField(fieldYear, "0");
+        mainPage.setValueField(fieldYear, text);
         mainPage.clickButtonNext();
         mainPage.inputWarning(0).shouldBe(Condition.visible);
         expected = "Неверный формат";
@@ -185,9 +186,9 @@ public class NegativeBuyTest {
     @DisplayName("Срок карты вышел в прошлом месяце")
     void validLastMonth() {
         mainPage.insertCard(cardInfo);
-        mainPage.clearField(fieldMounth);
+        mainPage.clearField(fieldMonth);
         mainPage.clearField(fieldYear);
-        mainPage.setValueField(fieldMounth, DataHelper.getLastMonth());
+        mainPage.setValueField(fieldMonth, DataHelper.getLastMonth());
         mainPage.setValueField(fieldYear, DataHelper.getYearForLastMonth());
         mainPage.clickButtonNext();
         mainPage.inputWarning(0).shouldBe(Condition.visible);
@@ -196,38 +197,32 @@ public class NegativeBuyTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    @DisplayName("Валидация поля имя. Цифры")
-    void validNameNumbers() {
+    @ParameterizedTest
+    @DisplayName("Валидация поля имя")
+        @CsvSource({
+                "Иван Иванов", "12345", "/`[]_-=+"
+        })
+    void validName(String text) {
         mainPage.insertCard(cardInfo);
         mainPage.clearField(fieldName);
-        mainPage.setValueField(fieldName, "12345");
+        mainPage.setValueField(fieldName, text);
         mainPage.clickButtonNext();
         expected = "Неверный формат";
         actual = mainPage.getInputWarning(0);
         assertEquals(expected, actual);
     }
 
-    @Test
-    @DisplayName("Валидация поля имя. Кириллица")
-    void validNameCirilica() {
-        mainPage.insertCard(cardInfo);
-        mainPage.clearField(fieldName);
-        mainPage.setValueField(fieldName, "Иван Иванов");
-        mainPage.clickButtonNext();
-        expected = "Неверный формат";
-        actual = mainPage.getInputWarning(0);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("Валидация поля CVC. Буквы")
-    void validCVC() {
+    @ParameterizedTest
+    @DisplayName("Валидация поля CVC")
+        @CsvSource({
+                "abc", "абв", "/`}"
+        })
+    void validCVC(String text) {
         mainPage.insertCard(cardInfo);
         mainPage.clearField(fieldCVC);
-        mainPage.setValueField(fieldCVC, "ab");
+        mainPage.setValueField(fieldCVC, text);
         mainPage.clickButtonNext();
-        expected = "Неверный формат";
+        expected = "Поле обязательно для заполнения";
         actual = mainPage.getInputWarning(0);
         assertEquals(expected, actual);
     }
