@@ -1,4 +1,4 @@
-
+[![Build status](https://ci.appveyor.com/api/projects/status/oxjrs7in96lmkcoy?svg=true)](https://ci.appveyor.com/project/TatiLarina/qa-diploma)
 # Дипломный проект "Тестировщик ПО"
 [План автоматизации](https://github.com/TatiLarina/QA_diploma/blob/main/docs/Plan.md)
 <br> Отчет по итогам тестирования
