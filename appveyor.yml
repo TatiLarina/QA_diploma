@@ -43,10 +43,10 @@ for:
       - sudo chmod +x /usr/local/bin/docker-compose
       - sudo docker-compose -f ./docker-compose.yml up -d
       - sleep 20
-      - java -jar ./artifacts/aqa-shop.jar --spring.datasource.url=jdbc:postgresql://localhost:5432/app &
+      - java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" -jar artifacts/aqa-shop.jar &
       - sleep 20
 
     build_script:
       - chmod +x gradlew
-      - ./gradlew test --info -Dselenide.headless=true -DdbUrl=jdbc:postgresql://localhost:5432/app
+      - ./gradlew test --info -Dselenide.headless=true "-Ddb.url=jdbc:postgresql://localhost:5432/app"
       - sudo docker-compose down
