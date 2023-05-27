@@ -51,11 +51,11 @@ public class MainPage {
 
     // Проверка видимости предупреждений
     public void checkMessageSuccess() {
-        messageSuccess.shouldBe(Condition.visible, Duration.ofSeconds(10));
+        messageSuccess.shouldBe(Condition.visible);
     }
 
     public void checkMessageError() {
-        messageError.shouldBe(Condition.visible, Duration.ofSeconds(10));
+        messageError.shouldBe(Condition.visible);
     }
 
     // Нажатие кнопки "Продолжить"
@@ -91,7 +91,7 @@ public class MainPage {
     }
 
     public void messageVisible() {
-        message.shouldBe(Condition.visible, Duration.ofSeconds(15));
+        message.shouldBe(Condition.visible);
     }
 
 

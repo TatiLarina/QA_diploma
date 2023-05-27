@@ -1,5 +1,6 @@
 package ru.netology.diploma.test;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import lombok.var;
@@ -21,6 +22,7 @@ public class SQLTest {
         open("http://localhost:8080/");
         SelenideLogger.addListener("allure", new AllureSelenide()
                 .screenshots(true).savePageSource(true));
+        Configuration.timeout = 15_000;
     }
 
     @BeforeEach
