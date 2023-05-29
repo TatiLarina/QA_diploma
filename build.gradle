@@ -6,7 +6,6 @@ plugins {
 
 group 'ru.netology'
 version '1.0-SNAPSHOT'
-
 sourceCompatibility = 1.8
 
 compileJava.options.encoding = "UTF-8"
@@ -45,7 +44,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless=true')
     systemProperty 'file.encoding', 'UTF-8'
     systemProperty 'db.url', System.getProperty('db.url', 'jdbc:postgresql://localhost:5432/app')
     // systemProperty 'db.url', System.getProperty('db.url', 'jdbc:mysql://localhost:3306/app')

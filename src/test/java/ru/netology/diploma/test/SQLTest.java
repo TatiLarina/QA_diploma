@@ -23,10 +23,12 @@ public class SQLTest {
         SelenideLogger.addListener("allure", new AllureSelenide()
                 .screenshots(true).savePageSource(true));
         Configuration.timeout = 15_000;
+
     }
 
     @BeforeEach
     void setUpPage() {
+        open("http://localhost:8080/");
         mainPage = new MainPage();
     }
 

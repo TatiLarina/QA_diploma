@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @SuppressWarnings("FieldCanBeLocal")
 
-public class NegativeBuyTest {
+public class NegativeCreditTest {
     private MainPage mainPage;
     private String expected;
     private String actual;
@@ -38,7 +38,7 @@ public class NegativeBuyTest {
         open("http://localhost:8080/");
         mainPage = new MainPage();
         cardInfo = DataHelper.getRandomValidCard();
-        mainPage.changeBuyForMoney();
+        mainPage.changeBuyOnCredit();
     }
 
     @AfterAll
@@ -94,9 +94,9 @@ public class NegativeBuyTest {
 
     @ParameterizedTest
     @DisplayName("Валидация поля месяц. Неверно указан срок действия карты")
-        @CsvSource({
+    @CsvSource({
             "00", "13"
-        })
+    })
     void validMonth0013(String month) {
         mainPage.insertCard(cardInfo);
         mainPage.clearField(fieldMonth);
@@ -110,9 +110,9 @@ public class NegativeBuyTest {
 
     @ParameterizedTest
     @DisplayName("Валидация поля месяц. Неверный формат")
-        @CsvSource({
+    @CsvSource({
             "1", "ab", "аб", "-/", "1a"
-        })
+    })
     void validMonthWrongFormat(String text) {
         mainPage.insertCard(cardInfo);
         mainPage.clearField(fieldMonth);
@@ -165,9 +165,9 @@ public class NegativeBuyTest {
 
     @ParameterizedTest
     @DisplayName("Валидация поля год. Неверный формат")
-        @CsvSource({
+    @CsvSource({
             "0", "ab", "аб", "-/", "1a"
-        })
+    })
     void validYear(String text) {
         mainPage.insertCard(cardInfo);
         mainPage.clearField(fieldYear);
@@ -196,9 +196,9 @@ public class NegativeBuyTest {
 
     @ParameterizedTest
     @DisplayName("Валидация поля имя")
-        @CsvSource({
-                "Иван Иванов", "12345", "/`[]_-=+"
-        })
+    @CsvSource({
+            "Иван Иванов", "12345", "/`[]_-=+"
+    })
     void validName(String text) {
         mainPage.insertCard(cardInfo);
         mainPage.clearField(fieldName);
@@ -211,9 +211,9 @@ public class NegativeBuyTest {
 
     @ParameterizedTest
     @DisplayName("Валидация поля CVC")
-        @CsvSource({
-                "abc", "абв", "/`}"
-        })
+    @CsvSource({
+            "abc", "абв", "/`}"
+    })
     void validCVC(String text) {
         mainPage.insertCard(cardInfo);
         mainPage.clearField(fieldCVC);
