@@ -2,7 +2,7 @@
 # Дипломный проект "Тестировщик ПО"
 [План автоматизации](https://github.com/TatiLarina/QA_diploma/blob/main/docs/Plan.md)
 <br> [Отчет по итогам тестирования](https://github.com/TatiLarina/QA_diploma/blob/main/docs/Report.md)
-<br> Отчет по итогам автоматизации
+<br> [Отчет по итогам автоматизации](https://github.com/TatiLarina/QA_diploma/blob/main/docs/Summary.md)
 
 ## Инструкция по запуску
 
